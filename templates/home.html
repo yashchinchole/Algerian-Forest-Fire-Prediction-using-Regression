@@ -1,27 +1,117 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Prediction Page</title>
+   <style>
+      body {
+         font-family: Arial, sans-serif;
+         background-color: #f4f4f9;
+         margin: 0;
+         padding: 0;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 100vh;
+      }
+
+      .container {
+         background: #ffffff;
+         padding: 20px;
+         border-radius: 8px;
+         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+         width: 400px;
+      }
+
+      h1 {
+         text-align: center;
+         color: #333;
+      }
+
+      form {
+         display: flex;
+         flex-direction: column;
+      }
+
+      label {
+         margin-top: 10px;
+         font-weight: bold;
+      }
+
+      input {
+         padding: 10px;
+         margin-top: 5px;
+         border: 1px solid #ccc;
+         border-radius: 4px;
+      }
+
+      button {
+         margin-top: 20px;
+         padding: 10px;
+         background-color: #007bff;
+         color: white;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+      }
+
+      button:hover {
+         background-color: #0056b3;
+      }
+
+      .result {
+         margin-top: 20px;
+         text-align: center;
+         font-size: 18px;
+         color: #333;
+      }
+   </style>
+</head>
 
 <body>
-   <div class="login">
-      <h1>FWI Prediction</h1>
+   <div class="container">
+      <h1>Forest Fire Prediction</h1>
+      <form action="{{ url_for('predict_datapoint') }}" method="post">
+         <label for="Temperature">Temperature</label>
+         <input type="number" step="0.01" id="Temperature" name="Temperature" placeholder="Enter Temperature"
+            value="25.0" required>
 
-      <!-- Main Input For Receiving Query to our ML -->
-      <form action="{{ url_for('predict_datapoint')}}" method="post">
-         <input type="text" name="Temperature" placeholder="Temperature" required="required" /><br>
-         <input type="text" name="RH" placeholder="RH" required="required" /><br>
-         <input type="text" name="Ws" placeholder="Ws" required="required" /><br>
-         <input type="text" name="Rain" placeholder="Rain" required="required" /><br>
-         <input type="text" name="FFMC" placeholder="FFMC" required="required" /><br>
-         <input type="text" name="DMC" placeholder="DMC" required="required" /><br>
-         <input type="text" name="ISI" placeholder="ISI" required="required" /><br>
-         <input type="text" name="Classes" placeholder="Classes" required="required" /><br>
-         <input type="text" name="Region" placeholder="Region" required="required" /><br>
+         <label for="RH">Relative Humidity (RH)</label>
+         <input type="number" step="0.01" id="RH" name="RH" placeholder="Enter RH" value="50.0" required>
 
-         <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+         <label for="Ws">Wind Speed (Ws)</label>
+         <input type="number" step="0.01" id="Ws" name="Ws" placeholder="Enter Wind Speed" value="5.0" required>
+
+         <label for="Rain">Rain</label>
+         <input type="number" step="0.01" id="Rain" name="Rain" placeholder="Enter Rainfall" value="0.0" required>
+
+         <label for="FFMC">FFMC</label>
+         <input type="number" step="0.01" id="FFMC" name="FFMC" placeholder="Enter FFMC" value="85.0" required>
+
+         <label for="DMC">DMC</label>
+         <input type="number" step="0.01" id="DMC" name="DMC" placeholder="Enter DMC" value="100.0" required>
+
+         <label for="ISI">ISI</label>
+         <input type="number" step="0.01" id="ISI" name="ISI" placeholder="Enter ISI" value="10.0" required>
+
+         <label for="Classes">Classes</label>
+         <input type="number" step="0.01" id="Classes" name="Classes" placeholder="Enter Classes (0 or 1)" value="0"
+            required>
+
+         <label for="Region">Region</label>
+         <input type="number" step="0.01" id="Region" name="Region" placeholder="Enter Region (1 or 2)" value="1"
+            required>
+
+         <button type="submit">Predict</button>
       </form>
-      <h2>
-         THE FWI prediction is {{result}}
-      </h2>
-
-      <body>
+      {% if result is not none %}
+      <div class="result">
+         <h2>The FWI Prediction is: {{ result }}</h2>
+      </div>
+      {% endif %}
+   </div>
+</body>
 
 </html>
